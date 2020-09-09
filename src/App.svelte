@@ -26,10 +26,7 @@
 </style>
 
 <main>
-  <h1>Hi {name}!</h1>
-  <p>
-    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-    how to build Svelte apps.
-  </p>
+  <h1>Svelte Quiz!</h1>
+  <h2>Hi {name}! Are you ready for some knowledge?</h2>
   <Quiz />
 </main>

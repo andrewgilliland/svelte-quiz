@@ -1,8 +1,11 @@
 <script>
+  import { fade, scale, blur, fly, slide } from "svelte/transition";
   import { get } from "http";
   import App from "./App.svelte";
   import Question from "./Question.svelte";
 
+  let activeQuestion = 0;
+  let score = 0;
   let quiz = getQuiz();
 
   async function getQuiz() {
@@ -13,22 +16,48 @@
     return quiz;
   }
 
-  function handleClick() {
+  function nextQuestion() {
+    activeQuestion = activeQuestion + 1;
+  }
+
+  function resetQuiz() {
+    score = 0;
+    activeQuestion = 0;
     quiz = getQuiz();
   }
+
+  function addToScore() {
+    score = score + 1;
+  }
+
+  // Reactive Statement
+  $: if (score > 7) {
+    alert("You won!");
+    resetQuiz();
+  }
+
+  // Reactive Declaration
+  $: questionNumber = activeQuestion + 1;
 </script>
 
 <style>
 </style>
 
 <div>
-  <button on:click={handleClick}>Get Questions</button>
+  <button on:click={resetQuiz}>Start New Quiz</button>
+
+  <h3>My Score: {score}</h3>
+  <h4>Question #{questionNumber}</h4>
 
   {#await quiz}
-    Loading...
+    <div>Loading...</div>
   {:then data}
-    {#each data.results as question}
-      <Question {question} />
+    {#each data.results as question, index}
+      {#if index === activeQuestion}
+        <div in:fade>
+          <Question {addToScore} {nextQuestion} {question} />
+        </div>
+      {/if}
     {/each}
   {/await}
 </div>
