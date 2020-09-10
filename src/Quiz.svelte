@@ -1,5 +1,6 @@
 <script>
   import { fade, scale, blur, fly, slide } from "svelte/transition";
+  import { onMount, beforeUpdate, afterUpdate, onDestroy } from "svelte";
   import { get } from "http";
   import App from "./App.svelte";
   import Question from "./Question.svelte";
@@ -7,6 +8,16 @@
   let activeQuestion = 0;
   let score = 0;
   let quiz = getQuiz();
+
+  onMount(() => {
+    console.log("I mounted");
+  });
+  beforeUpdate(() => {
+    console.log("before update");
+  });
+  afterUpdate(() => {
+    console.log("after update");
+  });
 
   async function getQuiz() {
     const res = await fetch(
@@ -44,7 +55,7 @@
 </style>
 
 <div>
-  <button on:click={resetQuiz}>Start New Quiz</button>
+  <button on:click|once={resetQuiz}>Start New Quiz</button>
 
   <h3>My Score: {score}</h3>
   <h4>Question #{questionNumber}</h4>

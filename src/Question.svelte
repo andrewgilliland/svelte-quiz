@@ -37,11 +37,15 @@
 </script>
 
 <style>
-  .correct-answer {
+  h5 {
+    color: violet;
+  }
+
+  .isCorrect {
     color: teal;
   }
 
-  .incorrect-answer {
+  .wrong {
     color: tomato;
   }
 </style>
@@ -52,11 +56,9 @@
   </h3>
 
   {#if isAnswered}
-    {#if isCorrect}
-      <h4 class="correct-answer">You got it right!</h4>
-    {:else}
-      <h4 class="incorrect-answer">You goofed up</h4>
-    {/if}
+    <h5 class:isCorrect class:wrong={!isCorrect}>
+      {#if isCorrect}You got it right!{:else}You goofed up{/if}
+    </h5>
   {/if}
 
   {#each allAnswers as answer}
