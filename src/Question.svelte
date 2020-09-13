@@ -1,7 +1,8 @@
 <script>
+  import { score } from "./store.js";
+
   export let question;
   export let nextQuestion;
-  export let addToScore;
 
   let isCorrect;
   let isAnswered = false;
@@ -31,7 +32,7 @@
     isCorrect = correct;
 
     if (correct) {
-      addToScore();
+      score.update((val) => val + 1);
     }
   }
 </script>
@@ -42,15 +43,38 @@
   }
 
   .isCorrect {
-    color: teal;
+    color: whitesmoke;
   }
 
   .wrong {
-    color: tomato;
+    color: yellow;
+  }
+
+  button {
+    background-color: #2c2c2c;
+    border: none;
+    border-radius: 5px;
+    color: #d1d1d1;
+    font-weight: 600;
+    margin: 10px;
+    padding: 10px 20px;
+  }
+
+  .question-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (min-width: 640px) {
+    .question-container {
+      flex-direction: row;
+    }
   }
 </style>
 
-<div>
+<div class="question">
   <h3>
     {@html question.question}
   </h3>
@@ -61,10 +85,14 @@
     </h5>
   {/if}
 
-  {#each allAnswers as answer}
-    <button on:click={() => checkQuestion(answer.correct)}>{@html answer.answer}
-    </button>
-  {/each}
+  <div class="question-container">
+    {#each allAnswers as answer}
+      <button
+        class="answer"
+        on:click={() => checkQuestion(answer.correct)}>{@html answer.answer}
+      </button>
+    {/each}
+  </div>
 
   {#if isAnswered}
     <div><button on:click={nextQuestion}>Next Question</button></div>

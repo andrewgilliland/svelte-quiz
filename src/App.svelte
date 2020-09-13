@@ -5,18 +5,22 @@
 
 <style>
   main {
+    background-color: deeppink;
+    color: #2c2c2c;
+    border-radius: 15px;
     text-align: center;
     padding: 1em;
-    max-width: 240px;
     margin: 0 auto;
   }
 
   h1 {
-    color: #ff3e00;
+    color: #2c2c2c;
     text-transform: uppercase;
-    font-size: 4em;
+    font-size: 3em;
     font-weight: 100;
   }
+
+  
 
   @media (min-width: 640px) {
     main {

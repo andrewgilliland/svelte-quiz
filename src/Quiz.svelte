@@ -4,10 +4,12 @@
   import { get } from "http";
   import App from "./App.svelte";
   import Question from "./Question.svelte";
+  import Modal from "./Modal.svelte";
+  import { score } from "./store.js";
 
   let activeQuestion = 0;
-  let score = 0;
   let quiz = getQuiz();
+  let isModalOpen = false;
 
   onMount(() => {
     console.log("I mounted");
@@ -32,19 +34,15 @@
   }
 
   function resetQuiz() {
-    score = 0;
+    isModalOpen = false;
+    score.set(0);
     activeQuestion = 0;
     quiz = getQuiz();
   }
 
-  function addToScore() {
-    score = score + 1;
-  }
-
   // Reactive Statement
-  $: if (score > 7) {
-    alert("You won!");
-    resetQuiz();
+  $: if ($score > 0) {
+    isModalOpen = true;
   }
 
   // Reactive Declaration
@@ -52,12 +50,21 @@
 </script>
 
 <style>
+  button {
+    background-color: #2c2c2c;
+    border: none;
+    border-radius: 5px;
+    color: #d1d1d1;
+    font-weight: 600;
+    padding: 15px 30px;
+    text-transform: uppercase;
+  }
 </style>
 
 <div>
   <button on:click|once={resetQuiz}>Start New Quiz</button>
 
-  <h3>My Score: {score}</h3>
+  <h3>My Score: {$score}</h3>
   <h4>Question #{questionNumber}</h4>
 
   {#await quiz}
@@ -66,9 +73,17 @@
     {#each data.results as question, index}
       {#if index === activeQuestion}
         <div in:fade>
-          <Question {addToScore} {nextQuestion} {question} />
+          <Question {nextQuestion} {question} />
         </div>
       {/if}
     {/each}
   {/await}
 </div>
+
+{#if isModalOpen}
+  <Modal on:close={resetQuiz}>
+    <h2>You Won!</h2>
+    <p>Congratulations!</p>
+    <button on:click={resetQuiz}>Start Over</button>
+  </Modal>
+{/if}
