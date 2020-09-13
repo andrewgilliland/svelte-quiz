@@ -59,6 +59,10 @@
     padding: 15px 30px;
     text-transform: uppercase;
   }
+
+  button:hover {
+    background-color: #3c3c3c;
+  }
 </style>
 
 <div>

@@ -60,6 +60,10 @@
     padding: 10px 20px;
   }
 
+  button:hover {
+    background-color: #3c3c3c;
+  }
+
   .question-container {
     display: flex;
     flex-direction: column;
